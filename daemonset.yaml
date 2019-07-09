@@ -4,6 +4,7 @@ metadata:
   name: ssm-agent
   labels:
     k8s-app: ssm-agent
+  namespace: kube-system
 spec:
   selector:
     matchLabels:
@@ -19,6 +20,12 @@ spec:
       hostPID: true
       # join host IPC namespace
       hostIPC: true 
+      # tolerations
+      tolerations:
+      - effect: NoExecute
+        operator: Exists
+      - effect: NoSchedule
+        operator: Exists
       containers:
       - image: alexeiled/aws-ssm-agent:2.3.634
         imagePullPolicy: Always
