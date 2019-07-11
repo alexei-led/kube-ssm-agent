@@ -4,8 +4,7 @@ FROM amazonlinux:2
 RUN yum update -y && \
     yum install -y systemd sudo procps awscli && \
     amazon-linux-extras install docker vim -y && \
-    yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/2.3.672.0/linux_amd64/amazon-ssm-agent.rpm
-    && \
+    yum install -y https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/2.3.672.0/linux_amd64/amazon-ssm-agent.rpm && \
     yum clean all && \
     rm -rf /var/cache/yum
 
