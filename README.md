@@ -6,7 +6,43 @@
 
 ## Pre-request
 
-You need to attach the `AmazonEC2RoleforSSM` policy to worker nodes instance role.
+Create a new Kubernetes service account (`ssm-sa` for example) and connect it to IAM role with the `AmazonEC2RoleforSSM` policy attached.
+
+```sh
+# create K8s service account linked to IAM role in kube-system namespace
+$ eksctl create iamserviceaccount --name $SA_NAME --cluster $CLUSTER_NAME --namespace kube-system \
+  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM --approve
+
+[ℹ]  using region us-west-2
+[ℹ]  1 iamserviceaccount (kube-system/ssm-sa) was included (based on the include/exclude rules)
+[!]  serviceaccounts that exists in Kubernetes will be excluded, use --override-existing-serviceaccounts to override
+[ℹ]  1 task: { 2 sequential sub-tasks: { create IAM role for serviceaccount "kube-system/ssm-sa", create serviceaccount "kube-system/ssm-sa" } }
+[ℹ]  building iamserviceaccount stack "eksctl-gaia-kube-addon-iamserviceaccount-kube-system-ssm-sa"
+[ℹ]  deploying stack "eksctl-gaia-kube-addon-iamserviceaccount-kube-system-ssm-sa"
+[ℹ]  created serviceaccount "kube-system/ssm-sa"
+```
+
+Configure the SSM daemonset to use this service account.
+
+```yaml
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: ssm-agent
+  labels:
+    k8s-app: ssm-agent
+  namespace: kube-syste
+spec:
+  ...
+  template:
+    ...
+    spec:
+      serviceAccountName: ssm-sa
+      containers:
+      - image: alexeiled/aws-ssm-agent:2.3.687
+        name: ssm-agent
+        ...
+```
 
 ## Getting started
 
