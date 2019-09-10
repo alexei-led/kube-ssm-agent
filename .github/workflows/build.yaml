@@ -11,17 +11,29 @@ jobs:
 
   build:
  
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-18.04
  
     steps:
     - uses: actions/checkout@v1
-    - name: Build and Push the Docker image
+
+    - name: decide on Docker image tag
+      run: |
+        echo $GITHUB_REF | sed -e 's/refs\/heads\///g' -e 's/refs\/tags\///g' | sed -e 's/master/latest/g' > IMAGE_TAG
+        echo "Tagging image with '$(cat IMAGE_TAG)'"
+
+    - name: build Docker image
+      env:
+        DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+      run: |
+        IMAGE_TAG=$(cat IMAGE_TAG) 
+        docker build --tag ${DOCKER_USERNAME}/aws-ssm-agent:${IMAGE_TAG} .
+    
+    - name: push Docker image
       env:
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       run: |
-        TAG=$(echo $GITHUB_REF | sed -e 's/refs\/heads\///g' -e 's/refs\/tags\///g' | sed -e 's/master/latest/g')
+        IMAGE_TAG=$(cat IMAGE_TAG)
         echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
-        docker build --tag ${DOCKER_USERNAME}/aws-ssm-agent:${TAG} .
         docker push ${DOCKER_USERNAME}/aws-ssm-agent:${TAG}
         docker logout
