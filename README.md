@@ -9,9 +9,17 @@
 Create a new Kubernetes service account (`ssm-sa` for example) and connect it to IAM role with the `AmazonEC2RoleforSSM` policy attached.
 
 ```sh
+$ export CLUSTER_NAME=gaia-kube
+$ export SA_NAME=ssm-sa
+
+# enavle IAM OIDC provider for EKS cluster
+$ eksctl utils associate-iam-oidc-provider --region=us-west-2 --name=$CLUSTER_NAME --approve
+
 # create K8s service account linked to IAM role in kube-system namespace
 $ eksctl create iamserviceaccount --name $SA_NAME --cluster $CLUSTER_NAME --namespace kube-system \
-  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM --approve
+  --attach-policy-arn arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM \
+  --override-existing-serviceaccounts \
+  --approve
 
 [ℹ]  using region us-west-2
 [ℹ]  1 iamserviceaccount (kube-system/ssm-sa) was included (based on the include/exclude rules)
