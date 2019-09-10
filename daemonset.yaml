@@ -14,6 +14,7 @@ spec:
       labels:
         name: ssm-agent
     spec:
+      serviceAccountName: ssm-sa 
       # join host network namespace
       hostNetwork: true
       # join host process namespace
@@ -27,7 +28,7 @@ spec:
       - effect: NoSchedule
         operator: Exists
       containers:
-      - image: alexeiled/aws-ssm-agent:2.3.701
+      - image: alexeiled/aws-ssm-agent:2.3.701-01
         imagePullPolicy: Always
         name: ssm-agent
         securityContext:
