@@ -1,4 +1,4 @@
-[![Docker Pulls](https://img.shields.io/docker/pulls/alexeiled/aws-ssm-agent.svg?style=popout)](https://hub.docker.com/r/alexeiled/aws-ssm-agent) [![](https://images.microbadger.com/badges/image/alexeiled/aws-ssm-agent.svg)](https://microbadger.com/images/alexeiled/aws-ssm-agent "Get your own image badge on microbadger.com")
+[![](https://github.com/alexei-led/kube-ssm-agent/workflows/Docker%20Image%20CI/badge.svg)](https://github.com/alexei-led/kube-ssm-agent/actions) [![Docker Pulls](https://img.shields.io/docker/pulls/alexeiled/aws-ssm-agent.svg?style=popout)](https://hub.docker.com/r/alexeiled/aws-ssm-agent) [![](https://images.microbadger.com/badges/image/alexeiled/aws-ssm-agent.svg)](https://microbadger.com/images/alexeiled/aws-ssm-agent "Get your own image badge on microbadger.com")
 
 # kube-ssm-agent
 
