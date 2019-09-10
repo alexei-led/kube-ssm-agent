@@ -35,5 +35,5 @@ jobs:
       run: |
         IMAGE_TAG=$(cat IMAGE_TAG)
         echo ${DOCKER_PASSWORD} | docker login -u ${DOCKER_USERNAME} --password-stdin
-        docker push ${DOCKER_USERNAME}/aws-ssm-agent:${TAG}
+        docker push ${DOCKER_USERNAME}/aws-ssm-agent:${IMAGE_TAG}
         docker logout
