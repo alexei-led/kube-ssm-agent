@@ -9,6 +9,7 @@ RUN yum update -y && \
     rm -rf /var/cache/yum
 
 COPY sts-entrypoint.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/sts-entrypoint.sh
 
 WORKDIR /opt/amazon/ssm/
 
