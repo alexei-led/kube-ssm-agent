@@ -11,10 +11,10 @@ aws sts assume-role-with-web-identity \
  --web-identity-token file://$AWS_WEB_IDENTITY_TOKEN_FILE \
  --duration-seconds 7200 > /tmp/cred.txt
 
-export AWS_ACCESS_KEY_ID="$(cat /tmp/cred.txt | jq -r ".Credentials.AccessKeyId")"
-export AWS_SECRET_ACCESS_KEY="$(cat /tmp/cred.txt | jq -r ".Credentials.SecretAccessKey")"
-export AWS_SESSION_TOKEN="$(cat /tmp/cred.txt | jq -r ".Credentials.SessionToken")"
+AWS_ACCESS_KEY_ID="$(cat /tmp/cred.txt | jq -r ".Credentials.AccessKeyId")"
+AWS_SECRET_ACCESS_KEY="$(cat /tmp/cred.txt | jq -r ".Credentials.SecretAccessKey")"
+AWS_SESSION_TOKEN="$(cat /tmp/cred.txt | jq -r ".Credentials.SessionToken")"
 
 rm /tmp/cred.txt
 
-exec "$@"
+exec env AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID} env AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY} env AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN} "$@"
