@@ -6,6 +6,14 @@
 
 ## Pre-request
 
+### Option 1 (working)
+
+Assign `AmazonEC2RoleforSSM` policy to EC2 instance profile.
+
+### Option 2 (not working yet)
+
+**Note**: this option is not working yet ...
+
 Create a new Kubernetes service account (`ssm-sa` for example) and connect it to IAM role with the `AmazonEC2RoleforSSM` policy attached.
 
 ```sh
