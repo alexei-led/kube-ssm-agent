@@ -1,0 +1,21 @@
+name: CI
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+
+jobs:
+  check_release:
+
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v1
+      
+    - name: Print Amazon SSM Agent Release
+      run: curl --silent https://api.github.com/repos/aws/amazon-ssm-agent/releases/latest | jq .tag_name
+      
+    - name: Run a multi-line script
+      run: |
+        echo Add other actions to build,
+        echo test, and deploy your project.
