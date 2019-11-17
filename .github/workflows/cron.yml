@@ -2,7 +2,7 @@ name: Check SSM Release
 
 on:
   schedule:
-    - cron: "0 * * * *"
+    - cron: "0 0 * * *"
 
 jobs:
   check_release:
