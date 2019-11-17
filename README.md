@@ -1,8 +1,12 @@
-[![](https://github.com/alexei-led/kube-ssm-agent/workflows/Docker%20Image%20CI/badge.svg)](https://github.com/alexei-led/kube-ssm-agent/actions) [![Docker Pulls](https://img.shields.io/docker/pulls/alexeiled/aws-ssm-agent.svg?style=popout)](https://hub.docker.com/r/alexeiled/aws-ssm-agent) [![](https://images.microbadger.com/badges/image/alexeiled/aws-ssm-agent.svg)](https://microbadger.com/images/alexeiled/aws-ssm-agent "Get your own image badge on microbadger.com")
+[![](https://github.com/alexei-led/kube-ssm-agent/workflows/Docker%20Image%20CI/badge.svg)](https://github.com/alexei-led/kube-ssm-agent/actions?query=workflow%3A"Docker+Image+CI) [![](https://github.com/alexei-led/kube-ssm-agent/workflows/Check%SSM%20Release/badge.svg)](https://github.com/alexei-led/kube-ssm-agent/actions?query=workflow%3A"Check+SSM+Release) [![Docker Pulls](https://img.shields.io/docker/pulls/alexeiled/aws-ssm-agent.svg?style=popout)](https://hub.docker.com/r/alexeiled/aws-ssm-agent) [![](https://images.microbadger.com/badges/image/alexeiled/aws-ssm-agent.svg)](https://microbadger.com/images/alexeiled/aws-ssm-agent "Get your own image badge on microbadger.com")
 
 # kube-ssm-agent
 
-`kube-ssm-agent` is a set of `Dockerfile` and a Kubernetes manifest file to deploy `aws-ssm-agent` onto Kubernetes nodes.
+The `kube-ssm-agent` is a _DeamonSet_ with [Amazon EC2 Simple Systems Manager (SSM) Agent](https://github.com/aws/amazon-ssm-agent) on-board to  specified Kubernetes nodes.
+
+## Continuously Updated with GitHub Actions
+
+The `kube-ssm-agent` is automatically updated when a new version of [Amazon SSM Agent](https://github.com/aws/amazon-ssm-agent) is released. A GitHub Actions [Check SSM Release](https://github.com/alexei-led/kube-ssm-agent/actions?query=workflow%3A"Check+SSM+Release) workflow checks for a new version of Amazon SSM Agent, once a day, and triggers a new [Docker Image CI](https://github.com/alexei-led/kube-ssm-agent/actions?query=workflow%3A"Docker+Image+CI) workflow, if a new version is available.
 
 ## Pre-request
 
