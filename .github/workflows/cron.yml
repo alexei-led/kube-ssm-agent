@@ -13,18 +13,18 @@ jobs:
     - name: get latest tag
       run: |
         repo_tag=$(curl --silent https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs/tags | jq '.[-1]')
-        echo "::set-output name=repo_tag::${repo_tag}"
+        echo ::set-output name=repo_tag::${repo_tag}
       
     - name: get latest ssm release
       run: |
         ssm_version=$(curl --silent https://api.github.com/repos/aws/amazon-ssm-agent/releases/latest | jq -r .tag_name)
-        echo "::set-output name=ssm_version::${ssm_version}"
+        echo ::set-output name=ssm_version::${ssm_version}
       
     - name: tag repository with latest ssm version if needed
-      if: steps.get_latest_tag.outputs.image_tag != steps.get_latest_ssm_release.ssm_version
+      if: steps.get_latest_tag.outputs.repo_tag != steps.get_latest_ssm_release.outputs.ssm_version
       uses: tvdias/github-tagger
       with:
         repo-token: ${{ secrets.GITHUB_PAT_TOKEN }}
-        tag: ${{steps.get_latest_ssm_release.ssm_version}}
+        tag: ${{steps.get_latest_ssm_release.outputs.ssm_version}}
 
         
