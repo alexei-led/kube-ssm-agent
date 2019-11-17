@@ -55,7 +55,7 @@ spec:
     spec:
       serviceAccountName: ssm-sa
       containers:
-      - image: alexeiled/aws-ssm-agent:2.3.687
+      - image: alexeiled/aws-ssm-agent
         name: ssm-agent
         ...
 ```

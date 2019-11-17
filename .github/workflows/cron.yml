@@ -10,12 +10,21 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-    - uses: actions/checkout@v1
-      
-    - name: Print Amazon SSM Agent Release
-      run: curl --silent https://api.github.com/repos/aws/amazon-ssm-agent/releases/latest | jq .tag_name
-      
-    - name: Run a multi-line script
+    - name: get latest tag
       run: |
-        echo Add other actions to build,
-        echo test, and deploy your project.
+        repo_tag=$(curl --silent https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs/tags | jq '.[-1]')
+        echo "::set-output name=repo_tag::${repo_tag}"
+      
+    - name: get latest ssm release
+      run: |
+        ssm_version=$(curl --silent https://api.github.com/repos/aws/amazon-ssm-agent/releases/latest | jq -r .tag_name)
+        echo "::set-output name=ssm_version::${ssm_version}"
+      
+    - name: tag repository with latest ssm version if needed
+      if: steps.get_latest_tag.outputs.image_tag != steps.get_latest_ssm_release.ssm_version
+      uses: tvdias/github-tagger
+      with:
+        repo-token: ${{ secrets.GITHUB_PAT_TOKEN }}
+        tag: ${{steps.get_latest_ssm_release.ssm_version}}
+
+        
