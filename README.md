@@ -20,7 +20,7 @@ Create a new Kubernetes service account (`ssm-sa` for example) and connect it to
 $ export CLUSTER_NAME=gaia-kube
 $ export SA_NAME=ssm-sa
 
-# enavle IAM OIDC provider for EKS cluster
+# setup IAM OIDC provider for EKS cluster
 $ eksctl utils associate-iam-oidc-provider --region=us-west-2 --name=$CLUSTER_NAME --approve
 
 # create K8s service account linked to IAM role in kube-system namespace

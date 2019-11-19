@@ -14,7 +14,7 @@ spec:
       labels:
         name: ssm-agent
     spec:
-      # Option 2: use IAM role associated with K8s service
+      # use IAM role associated with K8s service
       serviceAccountName: ssm-sa 
       # join host network namespace
       hostNetwork: true
