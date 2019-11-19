@@ -15,6 +15,8 @@ AWS_ACCESS_KEY_ID="$(cat /tmp/cred.txt | jq -r ".Credentials.AccessKeyId")"
 AWS_SECRET_ACCESS_KEY="$(cat /tmp/cred.txt | jq -r ".Credentials.SecretAccessKey")"
 AWS_SESSION_TOKEN="$(cat /tmp/cred.txt | jq -r ".Credentials.SessionToken")"
 
+mkdir -p /home/ssm-user/.aws
+
 cat << EOF > /home/ssm-user/.aws/credentials
 [default]
 aws_access_key_id = ${AWS_ACCESS_KEY_ID}
