@@ -26,12 +26,12 @@ jobs:
         echo "::debug::ssm latest release ${ssm_version}"
 
     - name: debug point 1
-      id: tag_repository
+      id: debug_1
       if: steps.get_latest_tag.outputs.repo_tag != steps.get_latest_ssm_release.outputs.ssm_version
       run: echo "::debug::not equal !="
 
     - name: debug point 2
-      id: tag_repository
+      id: debug_2
       if: steps.get_latest_tag.outputs.repo_tag == steps.get_latest_ssm_release.outputs.ssm_version
       run: echo "::debug::equal =="
       
