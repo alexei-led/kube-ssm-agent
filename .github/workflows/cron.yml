@@ -14,7 +14,7 @@ jobs:
     - name: get latest repository tag
       id: get_latest_tag
       run: |
-        repo_tag=$(curl --silent https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs/tags | jq '.[-1]')
+        repo_tag=$(curl --silent https://api.github.com/repos/${GITHUB_REPOSITORY}/git/refs/tags | jq -r '.[-1].ref' | awk -F/ '{print $NF}')
         echo ::set-output name=repo_tag::${repo_tag}
         echo "::debug::git repository tag ${repo_tag}"
       
@@ -25,16 +25,6 @@ jobs:
         echo ::set-output name=ssm_version::${ssm_version}
         echo "::debug::ssm latest release ${ssm_version}"
 
-    - name: debug point 1
-      id: debug_1
-      if: steps.get_latest_tag.outputs.repo_tag != steps.get_latest_ssm_release.outputs.ssm_version
-      run: echo "::debug::not equal !="
-
-    - name: debug point 2
-      id: debug_2
-      if: steps.get_latest_tag.outputs.repo_tag == steps.get_latest_ssm_release.outputs.ssm_version
-      run: echo "::debug::equal =="
-      
     - name: tag repository with latest ssm version if needed
       id: tag_repository
       if: steps.get_latest_tag.outputs.repo_tag != steps.get_latest_ssm_release.outputs.ssm_version
