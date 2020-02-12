@@ -109,3 +109,13 @@ An error occurred (TargetNotConnected) when calling the StartSession operation: 
 
 SessionManagerPlugin is not found. Please refer to SessionManager Documentation here: http://docs.aws.amazon.com/console/systems-manager/session-manager-plugin-not-found
 ```
+
+Q2. start session fails with "failed to create websocket for datachannel with error: CreateDataChannel" error
+
+```console
+----------ERROR-------
+Setting up data channel with id alexei-0f1f1d0f80f2432b8 failed: failed to create websocket for datachannel with error: CreateDataChannel failed with no output or error: createDataChannel request failed: unexpected response from the service <BadRequest xmlns=""><message>Unauthorized request.</message></BadRequest>
+
+```
+
+This can be resolved by adding 'ssmmessages:CreateDataChannel' (Allow '*') to `NodeInstanceRole`. Probably a SSM bug.
