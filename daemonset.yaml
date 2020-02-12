@@ -29,7 +29,7 @@ spec:
       - effect: NoSchedule
         operator: Exists
       containers:
-      - image: alexeiled/aws-ssm-agent:iam-ssm
+      - image: alexeiled/aws-ssm-agent
         imagePullPolicy: Always
         name: ssm-agent
         securityContext:
