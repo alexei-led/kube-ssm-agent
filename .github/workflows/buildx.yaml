@@ -36,6 +36,6 @@ jobs:
     
     - name: push image
       run: |
-        echo ${{ secrets.GITHUB_PAT_TOKEN }} | docker login ghcr.io -u USERNAME --password-stdin
+        echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u USERNAME --password-stdin
         docker push ghcr.io/${{ github.repository_owner }}/aws-ssm-agent:${IMAGE_TAG}
  
