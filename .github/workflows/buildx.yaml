@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: GitHub Image CI
 
 on:
   push:
@@ -30,12 +30,13 @@ jobs:
         echo "::debug::get ssm version ${version}"
         echo "::set-env name=SSM_VERSION::${version}"
 
-    - name: build image
-      run: |
-        docker build --build-arg SSM_VERSION=${SSM_VERSION} --tag ghcr.io/${{ github.repository_owner }}/aws-ssm-agent:${IMAGE_TAG} .
-    
-    - name: push image
-      run: |
-        echo ${{ secrets.CR_PAT }} | docker login ghcr.io -u USERNAME --password-stdin
-        docker push ghcr.io/${{ github.repository_owner }}/aws-ssm-agent:${IMAGE_TAG}
+    - name: build and push Docker image
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.CR_PAT }}
+        registry: ghcr.io
+        repository: ${{ github.repository_owner }}/aws-ssm-agent
+        tags: ${IMAGE_TAG}
+
  
