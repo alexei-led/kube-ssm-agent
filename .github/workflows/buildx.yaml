@@ -37,6 +37,7 @@ jobs:
         password: ${{ secrets.CR_PAT }}
         registry: ghcr.io
         repository: ${{ github.repository_owner }}/aws-ssm-agent
-        tags: ${IMAGE_TAG}
+        tag_with_ref: true
+        add_git_labels: true
 
  
