@@ -1,0 +1,45 @@
+name: GitHub Image CI
+
+on:
+  push:
+    branches:
+      - '*'
+    tags:
+      - '*'
+
+jobs:
+
+  build:
+ 
+    runs-on: ubuntu-18.04
+ 
+    steps:
+    - uses: actions/checkout@v1
+
+    - name: decide on tag
+      run: |
+        image_tag=$(echo $GITHUB_REF | sed -e 's/refs\/heads\///g' -e 's/refs\/tags\///g' | sed -e 's/master/latest/g')
+        echo "::debug::decide on image tag ${image_tag}"
+        echo "::set-env name=IMAGE_TAG::${image_tag}"
+
+    - name: get ssm version
+      id: ssm
+      run: |
+        version=${IMAGE_TAG}
+        url=https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/${IMAGE_TAG}/linux_amd64/amazon-ssm-agent.rpm
+        curl --output /dev/null --silent --head --fail "$url" || version=$(curl --silent https://api.github.com/repos/aws/amazon-ssm-agent/releases/latest | jq -r .tag_name)
+        echo "::debug::get ssm version ${version}"
+        echo "::set-output name=agent-version::${version}"
+
+    - name: build and push Docker image
+      uses: docker/build-push-action@v1
+      with:
+        username: ${{ github.actor }}
+        password: ${{ secrets.CR_PAT }}
+        registry: ghcr.io
+        repository: ${{ github.repository_owner }}/aws-ssm-agent
+        build_args: SSM_VERSION=${{ steps.ssm.outputs.agent-version }}
+        tag_with_ref: true
+        add_git_labels: true
+
+ 
