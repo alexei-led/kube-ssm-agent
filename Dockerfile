@@ -6,7 +6,7 @@ ARG SSM_VERSION
 RUN yum update -y && \
     yum install -y systemd sudo procps awscli jq && \
     amazon-linux-extras install docker vim -y && \
-    yum install -y https://s3.us-east-1.amazonaws.com/amazon-ssm-us-east-1/${SSM_VERSION}/linux_amd64/amazon-ssm-agent.rpm && \
+    yum install -y https://s3.us-east-1.amazonaws.com/amazon-ssm-us-east-1/${SSM_VERSION}/${TARGETOS}_${TARGETARCH}/amazon-ssm-agent.rpm && \
     yum clean all && \
     rm -rf /var/cache/yum
 
