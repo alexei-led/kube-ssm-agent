@@ -2,8 +2,7 @@ FROM amazonlinux:2
 
 ARG SSM_VERSION
 
-RUN env | grep TARGET
-RUN env | grep BUILD
+RUN printenv
 
 # install systemd, sudo (needed to create ssm-user) and amazon-ssm-agent
 RUN yum update -y && \
