@@ -1,8 +1,10 @@
 FROM amazonlinux:2
 
+ARG TARGETPLATFORM
+ARG TARGETOS
+ARG TARGETARCH
+ARG TARGETVARIANT
 ARG SSM_VERSION
-
-RUN printenv
 
 # install systemd, sudo (needed to create ssm-user) and amazon-ssm-agent
 RUN yum update -y && \
