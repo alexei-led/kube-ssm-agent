@@ -16,19 +16,10 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: decide on tag
-      id: get_tag
-      run: |
-        tag=$(echo $GITHUB_REF | sed -e 's/refs\/heads\///g' -e 's/refs\/tags\///g' | sed -e 's/master/latest/g')
-        echo "::debug::decide on image tag ${tag}"
-        echo "::set-output name=tag::${tag}"
-
     - name: get ssm version
       id: get_ssm
       run: |
-        version=${{ steps.get_tag.outputs.tag }}
-        url=https://s3.amazonaws.com/ec2-downloads-windows/SSMAgent/${version}/linux_amd64/amazon-ssm-agent.rpm
-        curl --output /dev/null --silent --head --fail "$url" || version=$(curl --silent https://api.github.com/repos/aws/amazon-ssm-agent/releases/latest | jq -r .tag_name)
+        version=$(curl --silent https://api.github.com/repos/aws/amazon-ssm-agent/releases/latest | jq -r .tag_name)
         echo "::debug::get ssm version ${version}"
         echo "::set-output name=version::${version}"
 
@@ -61,7 +52,9 @@ jobs:
         platforms: linux/amd64,linux/arm64
         cache-from: type=local,src=/tmp/.buildx-cache
         cache-to: type=local,dest=/tmp/.buildx-cache
-        tags: ${{ secrets.DOCKER_USERNAME }}/aws-ssm-agent:${{ steps.get_ssm.outputs.version }}
+        tags: |
+          ${{ secrets.DOCKER_USERNAME }}/aws-ssm-agent:${{ steps.get_ssm.outputs.version }}
+          ${{ secrets.DOCKER_USERNAME }}/aws-ssm-agent:latest
         push: true
 
     
