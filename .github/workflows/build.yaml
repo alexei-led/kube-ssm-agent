@@ -23,10 +23,10 @@ jobs:
         echo "::debug::get ssm version ${version}"
         echo "::set-output name=version::${version}"
 
-    - name: set up QEMU
+    - name: Set up QEMU
       uses: docker/setup-qemu-action@v1
       
-    - name: set up Docker buildx
+    - name: Set up Docker buildx
       uses: docker/setup-buildx-action@v1
 
     - name: Login to DockerHub
@@ -35,7 +35,14 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
 
-    - name: cache Docker layers
+    - name: Login to GitHub Container Registry
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{ github.repository_owner }}
+        password: ${{ secrets.CR_PAT }}
+
+    - name: Cache Docker layers
       uses: actions/cache@v2
       id: cache
       with:
@@ -44,7 +51,7 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-buildx-
 
-    - name: build and push Docker image
+    - name: Build and push Docker image
       id: docker_build
       uses: docker/build-push-action@v2
       with:
@@ -55,9 +62,10 @@ jobs:
         tags: |
           ${{ secrets.DOCKER_USERNAME }}/aws-ssm-agent:${{ steps.get_ssm.outputs.version }}
           ${{ secrets.DOCKER_USERNAME }}/aws-ssm-agent:latest
+          ghcr.io/${{ github.repository_owner }}/aws-ssm-agent:${{ steps.get_ssm.outputs.version }}
+          ghcr.io/${{ github.repository_owner }}/aws-ssm-agent:latest
         push: true
 
-    
     - name: image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
 
