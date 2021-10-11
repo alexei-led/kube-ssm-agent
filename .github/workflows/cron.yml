@@ -1,6 +1,7 @@
 name: Check SSM Release
 
 on:
+  workflow_dispatch:
   schedule:
     - cron: "0 0 * * *"
     #- cron: "*/5 * * * *" uncomment for debug (every 5 min)

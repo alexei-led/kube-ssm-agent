@@ -19,9 +19,10 @@ Create a new Kubernetes service account (`ssm-sa` for example) and connect it to
 ```sh
 $ export CLUSTER_NAME=gaia-kube
 $ export SA_NAME=ssm-sa
+$ export REGION=us-west-2
 
 # setup IAM OIDC provider for EKS cluster
-$ eksctl utils associate-iam-oidc-provider --region=us-west-2 --name=$CLUSTER_NAME --approve
+$ eksctl utils associate-iam-oidc-provider --region=$REGION --cluster=$CLUSTER_NAME --approve
 
 # create K8s service account linked to IAM role in kube-system namespace
 $ eksctl create iamserviceaccount --name $SA_NAME --cluster $CLUSTER_NAME --namespace kube-system \
@@ -71,7 +72,7 @@ Clone this repository and run:
 ```console
 $ kubectl apply -f daemonset.yaml
 
-$ AWS_DEFAULT_REGION=us-west-2 aws ssm start-session --target <instance-id>
+$ AWS_DEFAULT_REGION=$REGION aws ssm start-session --target <instance-id>
 
 starting session with SessionId: ...
 
