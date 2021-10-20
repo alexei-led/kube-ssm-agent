@@ -66,6 +66,17 @@ jobs:
           ghcr.io/${{ github.repository_owner }}/aws-ssm-agent:latest
         push: true
 
+    - name: Tweet about Release
+      uses: twwd/twitter-github-action@v1
+      with:
+        twitter_api_key: ${{ secrets.TWITTER_API_KEY }}
+        twitter_api_secret_key: ${{ secrets.TWITTER_API_SECRET_KEY }}
+        twitter_access_token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+        twitter_access_token_secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+        tweet_body: |
+            I just released a new version ${{ steps.get_ssm.outputs.version }} of ${{ github.event.repository.name }} 🎉
+            Check it out here ${{ github.event.release.html_url }} and download the new Docker image from https://hub.docker.com/r/alexeiled/aws-ssm-agent
+
     - name: image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
 
