@@ -67,16 +67,16 @@ jobs:
         push: true
 
     - name: Tweet about Release
-      uses: twwd/twitter-github-action@v1
+      uses: ethomson/send-tweet-action@v1
       with:
-        twitter_api_key: ${{ secrets.TWITTER_API_KEY }}
-        twitter_api_secret_key: ${{ secrets.TWITTER_API_SECRET_KEY }}
-        twitter_access_token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
-        twitter_access_token_secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-        tweet_body: |
+        status: |
             I just released a new version ${{ steps.get_ssm.outputs.version }} of ${{ github.event.repository.name }} 🎉
-            Check it out here ${{ github.event.release.html_url }} and download the new Docker image from https://hub.docker.com/r/alexeiled/aws-ssm-agent
-
+            Check it out here ${{ github.event.release.html_url }} and download the new Docker image from https://hub
+        consumer-key: ${{ secrets.TWITTER_API_KEY }}
+        consumer-secret: ${{ secrets.TWITTER_API_SECRET_KEY }}
+        access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
+        access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
+      
     - name: image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
 
