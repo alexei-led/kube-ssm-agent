@@ -66,17 +66,6 @@ jobs:
           ghcr.io/${{ github.repository_owner }}/aws-ssm-agent:latest
         push: true
 
-    - name: Tweet about Release
-      uses: ethomson/send-tweet-action@v1
-      with:
-        status: |
-            I just released a new version ${{ steps.get_ssm.outputs.version }} of ${{ github.event.repository.name }} 🎉
-            Check it out here ${{ github.event.release.html_url }} and download the new Docker image from https://hub
-        consumer-key: ${{ secrets.TWITTER_API_KEY }}
-        consumer-secret: ${{ secrets.TWITTER_API_SECRET_KEY }}
-        access-token: ${{ secrets.TWITTER_ACCESS_TOKEN }}
-        access-token-secret: ${{ secrets.TWITTER_ACCESS_TOKEN_SECRET }}
-      
     - name: image digest
       run: echo ${{ steps.docker_build.outputs.digest }}
 
