@@ -22,18 +22,21 @@ jobs:
     - name: find tag
       id: get_latest_tag
       run: |
-        tag=curl --silent https://api.github.com/repos/alexei-led/kube-ssm-agent/git/refs/tags | jq -r '.[] | .ref | sub("^refs/tags/"; "") | select(. | index("${{steps.get_latest_ssm_release.outputs.ssm_version}}"))'
+        tag=$(curl --silent https://api.github.com/repos/alexei-led/kube-ssm-agent/git/refs/tags | jq -r '.[] | .ref | sub("^refs/tags/"; "") | select(. | index("${{steps.get_latest_ssm_release.outputs.ssm_version}}"))')
         echo ::set-output name=tag::${tag}
         echo "::debug::git found tag ${tag}"
-      
-    
+
+    # - name: tag repository with latest ssm version if needed
+    #   id: tag_repository
+    #   if: steps.get_latest_tag.outputs.tag != steps.get_latest_ssm_release.outputs.ssm_version
+    #   run: |
+    #     echo "::debug::inspect found ${{steps.get_latest_tag.outputs.tag}}"
+    #     echo "::debug::test tag repo with ${{steps.get_latest_ssm_release.outputs.ssm_version}}"
 
     - name: tag repository with latest ssm version if needed
       id: tag_repository
-      if: steps.find_tag.outputs.tag != steps.get_latest_ssm_release.outputs.ssm_version
+      if: steps.get_latest_tag.outputs.tag != steps.get_latest_ssm_release.outputs.ssm_version
       uses: tvdias/github-tagger@v0.0.1
       with:
         repo-token: ${{ secrets.CR_PAT }}
         tag: ${{steps.get_latest_ssm_release.outputs.ssm_version}}
-
-        
